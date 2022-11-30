@@ -56,7 +56,7 @@ const Profile = () => {
         <>
           <div className="new-photo" ref={newPhotoForm}>
             <h3>Compartilhe algum momento seu:</h3>
-            <form action={submitHandle}>
+            <form onSubmit={submitHandle}>
               <label>
                 <span>Titulo para foto</span>
                 <input type="text" placeholder="Insira um titulo" />
