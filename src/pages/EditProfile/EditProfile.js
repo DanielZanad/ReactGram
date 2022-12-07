@@ -37,8 +37,7 @@ const EditProfile = () => {
   useEffect(() => {
 
     if (user) {
-      console.log(user.name);
-      setName("walter");
+      setName(user.name);
       setEmail(user.email);
       setBio(user.bio);
     }
