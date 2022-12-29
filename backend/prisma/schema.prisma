@@ -16,7 +16,7 @@ type PhotosComments {
 
 model photos {
   id        String           @id @default(auto()) @map("_id") @db.ObjectId
-  v         Int              @map("__v")
+  v         Int?             @map("__v")
   comments  PhotosComments[]
   createdAt DateTime         @db.Date
   image     String
@@ -29,7 +29,7 @@ model photos {
 
 model users {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  v            Int      @map("__v")
+  v            Int?     @map("__v")
   bio          String?
   createdAt    DateTime @db.Date
   email        String
