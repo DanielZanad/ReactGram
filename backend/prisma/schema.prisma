@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type PhotosComments {
+  comment   String
+  userId    String @db.ObjectId
+  userImage String
+  userName  String
+}
+
+model photos {
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int              @map("__v")
+  comments  PhotosComments[]
+  createdAt DateTime         @db.Date
+  image     String
+  likes     String[]         @db.ObjectId
+  title     String
+  updatedAt DateTime         @db.Date
+  userId    String           @db.ObjectId
+  userName  String
+}
+
+model users {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  v            Int      @map("__v")
+  bio          String?
+  createdAt    DateTime @db.Date
+  email        String
+  name         String
+  password     String
+  profileImage String
+  updatedAt    DateTime @db.Date
+}
