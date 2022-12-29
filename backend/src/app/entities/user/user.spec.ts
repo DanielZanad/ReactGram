@@ -1,4 +1,4 @@
-import { User } from './user';
+import { User } from './User';
 import { PasswordHash } from './passwordHash';
 
 describe('User', () => {

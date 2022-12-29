@@ -1,3 +1,4 @@
+import { Replace } from 'src/app/helpers/Replace';
 import { PasswordHash } from './passwordHash';
 
 export interface UserProps {
@@ -14,9 +15,12 @@ export class User {
   private _id: string;
   private props: UserProps;
 
-  constructor(props: UserProps, id?: string) {
+  constructor(props: Replace<UserProps, { createdAt?: Date }>, id?: string) {
     this._id = id;
-    this.props = props;
+    this.props = {
+      ...props,
+      createdAt: props.createdAt ?? new Date(),
+    };
   }
 
   public get id(): string {
@@ -49,10 +53,6 @@ export class User {
 
   public get createdAt(): Date {
     return this.props.createdAt;
-  }
-
-  public set createdAt(createdAt: Date) {
-    this.props.createdAt = createdAt;
   }
 
   public get updatedAt(): Date | null {
