@@ -4,7 +4,5 @@ import { DatabaseModule } from './infra/database/database.module';
 
 @Module({
   imports: [HttpModule, DatabaseModule],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

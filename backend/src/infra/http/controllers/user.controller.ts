@@ -1,12 +1,23 @@
-import { Controller, Get } from '@nestjs/common';
-import { PrismaService } from 'src/infra/database/prisma/prisma.service';
+import { Body, Controller, Post } from '@nestjs/common';
+import { registerUserBody } from '../dtos/register-user-body';
+import { RegisterUser } from '@app/use-cases/register-user';
 
-@Controller('users')
+@Controller('api/users')
 export class UserController {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private registerUser: RegisterUser) {}
 
-  @Get('list')
-  async list() {
-    return this.prisma.users.findMany();
+  @Post('register')
+  async register(@Body() body: registerUserBody) {
+    const { password, email, name } = body;
+
+    const { user } = await this.registerUser.execute({
+      name,
+      email,
+      password,
+    });
+
+    return {
+      user,
+    };
   }
 }

@@ -7,14 +7,12 @@ export class PasswordHash {
     return this.passwordHash;
   }
 
-  private validatePasswordLength(password: string): boolean {
-    return password.length >= 5 && password.length <= 18;
+  public set value(password: string) {
+    this.passwordHash = password;
   }
 
-  private async generatePasswordHash(password: string) {
-    const salt = await genSalt();
-    const passwordHash = await hash(password, salt);
-    return passwordHash;
+  private validatePasswordLength(password: string): boolean {
+    return password.length >= 5 && password.length <= 18;
   }
 
   constructor(password: string) {
@@ -28,8 +26,6 @@ export class PasswordHash {
       throw new Error('Password only contains numbers!');
     }
 
-    this.generatePasswordHash(password).then(
-      (res) => (this.passwordHash = res),
-    );
+    this.passwordHash = password;
   }
 }

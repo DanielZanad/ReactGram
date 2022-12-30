@@ -6,7 +6,7 @@ export interface UserProps {
   email: string;
   passwordHash: PasswordHash;
   createdAt: Date;
-  updatedAt?: Date | null;
+  updatedAt: Date;
   profileImage: string;
   bio?: string | null;
 }
@@ -15,11 +15,15 @@ export class User {
   private _id: string;
   private props: UserProps;
 
-  constructor(props: Replace<UserProps, { createdAt?: Date }>, id?: string) {
+  constructor(
+    props: Replace<UserProps, { createdAt?: Date; updatedAt?: Date }>,
+    id?: string,
+  ) {
     this._id = id;
     this.props = {
       ...props,
       createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? new Date(),
     };
   }
 
