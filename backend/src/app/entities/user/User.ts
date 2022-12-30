@@ -1,10 +1,10 @@
 import { Replace } from 'src/app/helpers/Replace';
-import { PasswordHash } from './passwordHash';
+import { Password } from './password';
 
 export interface UserProps {
   name: string;
   email: string;
-  passwordHash: PasswordHash;
+  passwordHash: Password;
   createdAt: Date;
   updatedAt: Date;
   profileImage: string;
@@ -47,11 +47,11 @@ export class User {
     this.props.email = email;
   }
 
-  public get passwordHash(): PasswordHash {
+  public get passwordHash(): Password {
     return this.props.passwordHash;
   }
 
-  public set passwordHash(passwordHash: PasswordHash) {
+  public set passwordHash(passwordHash: Password) {
     this.props.passwordHash = passwordHash;
   }
 

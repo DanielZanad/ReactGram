@@ -1,14 +1,12 @@
-import { genSalt, hash } from 'bcryptjs';
-
-export class PasswordHash {
-  private passwordHash: string;
+export class Password {
+  private password: string;
 
   public get value(): string {
-    return this.passwordHash;
+    return this.password;
   }
 
   public set value(password: string) {
-    this.passwordHash = password;
+    this.password = password;
   }
 
   private validatePasswordLength(password: string): boolean {
@@ -26,6 +24,6 @@ export class PasswordHash {
       throw new Error('Password only contains numbers!');
     }
 
-    this.passwordHash = password;
+    this.password = password;
   }
 }

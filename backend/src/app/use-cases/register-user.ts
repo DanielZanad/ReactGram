@@ -1,7 +1,7 @@
 import { User } from '@app/entities/user/User';
 import { UserRepository } from '@app/repositories/user-repository';
 import { Injectable } from '@nestjs/common';
-import { PasswordHash } from '@app/entities/user/passwordHash';
+import { Password } from '@app/entities/user/password';
 import { generatePasswordHash } from '@app/helpers/GenerateHash';
 
 interface RegisterUserRequest {
@@ -21,7 +21,7 @@ export class RegisterUser {
   async execute(request: RegisterUserRequest): Promise<RegisterUserResponse> {
     const { email, name, password } = request;
 
-    const passwordHash = new PasswordHash(password);
+    const passwordHash = new Password(password);
 
     passwordHash.value = await generatePasswordHash(passwordHash.value);
 

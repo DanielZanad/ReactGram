@@ -1,16 +1,16 @@
 import { generatePasswordHash } from '@app/helpers/GenerateHash';
 import { User } from './User';
-import { PasswordHash } from './passwordHash';
+import { Password } from './password';
 
 describe('User', () => {
   it('should be able to create a new user', async () => {
-    const passwordHash = new PasswordHash('321321fd');
+    const password = new Password('321321fd');
 
-    passwordHash.value = await generatePasswordHash(passwordHash.value);
+    password.value = await generatePasswordHash(password.value);
     const user = new User({
       name: 'walter',
       email: 'walter@white.com',
-      passwordHash: passwordHash,
+      passwordHash: password,
       profileImage: 'someImage.png',
       createdAt: new Date(),
     });
