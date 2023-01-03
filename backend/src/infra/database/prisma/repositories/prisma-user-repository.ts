@@ -7,6 +7,15 @@ import { PrismaUserMapper } from '../mappers/prisma-user-mapper';
 @Injectable()
 export class PrismaUserRepository implements UserRepository {
   constructor(private readonly prisma: PrismaService) {}
+  async findById(userId: string): Promise<User> {
+    const result = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    return PrismaUserMapper.toDomain(result);
+  }
 
   async register(user: User) {
     const raw = PrismaUserMapper.toPrisma(user);
