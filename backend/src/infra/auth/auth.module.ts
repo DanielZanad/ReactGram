@@ -7,6 +7,7 @@ import { UserRepository } from '@app/repositories/user-repository';
 import { PrismaService } from '@infra/database/prisma/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { jwtConstants } from './constants';
       provide: UserRepository,
       useClass: PrismaUserRepository,
     },
+    JwtStrategy,
   ],
   exports: [AuthService],
 })
