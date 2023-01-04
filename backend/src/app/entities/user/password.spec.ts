@@ -10,11 +10,7 @@ describe('User passwordHash', () => {
     expect(() => new Password('12345')).toThrow();
   });
 
-  it('should not be able to create a passwordHash with less than 5 characters', () => {
-    expect(() => new Password('1abc')).toThrow();
-  });
-
-  it('should not be able to create a passwordHash with more than 20 characters', () => {
-    expect(() => new Password('a'.repeat(21))).toThrow();
+  it('should not be able to create a passwordHash with less than 6 characters', () => {
+    expect(() => new Password('1abcd')).toThrow();
   });
 });

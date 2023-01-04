@@ -12,7 +12,7 @@ describe('Register user', () => {
       password: '3x4mpl3P4ssw0rd',
     });
 
-    expect(userRepository.user).toHaveLength(1);
-    expect(userRepository.user[0]).toEqual(user);
+    expect(userRepository.users).toHaveLength(1);
+    expect(userRepository.users[0]).toEqual(user);
   });
 });

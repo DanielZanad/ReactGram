@@ -5,17 +5,31 @@ import {
   UseGuards,
   Request,
   Get,
+  UseInterceptors,
+  UploadedFile,
+  Put,
+  ParseFilePipe,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { registerUserBody } from '../dtos/register-user-body';
 import { RegisterUser } from '@app/use-cases/register-user';
 import { LocalAuthGuard } from '@infra/auth/local-auth.guard';
 import { AuthService } from '@infra/auth/auth.service';
 import { JwtAuthGuard } from '@infra/auth/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { updateUserBody } from '../dtos/update-user-body';
+import { GetUserById } from '@app/use-cases/get-user-by-id';
+import { Password } from '@app/entities/user/password';
+import { UpdateUser } from '@app/use-cases/update-user';
 
 @Controller('api/users')
 export class UserController {
   constructor(
     private registerUser: RegisterUser,
+    private getUserById: GetUserById,
+    private updateUser: UpdateUser,
     private authService: AuthService,
   ) {}
 
@@ -41,8 +55,58 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Put()
+  @UseInterceptors(
+    FileInterceptor('profileImage', {
+      storage: diskStorage({
+        destination: './uploads/users',
+
+        filename: (req, file, cb) => {
+          cb(null, Date.now() + extname(file.originalname));
+        },
+      }),
+    }),
+  )
+  async update(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' })],
+        fileIsRequired: false,
+      }),
+    )
+    file: Express.Multer.File,
+    @Body()
+    body: updateUserBody,
+    @Request() req,
+  ) {
+    const { name, password, bio } = body;
+
+    let profileImage: Express.Multer.File = null;
+
+    if (file) {
+      profileImage = file;
+    }
+
+    const { user } = await this.getUserById.execute({ userId: req.user._id });
+
+    const { updatedUser } = await this.updateUser.execute({
+      user,
+      profileImage,
+      name,
+      password,
+      bio,
+    });
+
+    console.log(updatedUser.passwordHash.value);
+
+    return;
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
+    console.log(req.user);
+
     return req.user;
   }
 }
