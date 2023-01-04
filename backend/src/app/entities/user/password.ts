@@ -10,7 +10,7 @@ export class Password {
   }
 
   private validatePasswordLength(password: string): boolean {
-    return password.length >= 5 && password.length <= 18;
+    return password.length >= 6 && password.length <= 230;
   }
 
   constructor(password: string) {
