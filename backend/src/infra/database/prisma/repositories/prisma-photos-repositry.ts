@@ -8,6 +8,26 @@ import { Injectable } from '@nestjs/common';
 export class PrismaPhotosRepository implements PhotoRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findById(photoId: string): Promise<Photo | null> {
+    const result = await this.prisma.photos.findUnique({
+      where: {
+        id: photoId,
+      },
+    });
+
+    if (!result) {
+      return null;
+    }
+
+    const photo = PrismaPhotosMapper.toDomain(result);
+
+    return photo;
+  }
+
+  getUserPhotos(userId: string): Promise<Photo | Photo[]> {
+    throw new Error('Method not implemented.');
+  }
+
   async getAllPhotos(): Promise<Photo[]> {
     const result = await this.prisma.photos.findMany();
 

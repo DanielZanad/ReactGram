@@ -7,10 +7,18 @@ import { GetUserById } from '@app/use-cases/get-user-by-id';
 import { UpdateUser } from '@app/use-cases/update-user';
 import { PhotoController } from './controllers/photos.controller';
 import { GetAllPhotos } from '@app/use-cases/get-all-photos';
+import { GetPhotoById } from '@app/use-cases/get-photo-by-id';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [UserController, PhotoController],
-  providers: [RegisterUser, GetUserById, UpdateUser, AuthService, GetAllPhotos],
+  providers: [
+    RegisterUser,
+    GetUserById,
+    UpdateUser,
+    AuthService,
+    GetAllPhotos,
+    GetPhotoById,
+  ],
 })
 export class HttpModule {}
