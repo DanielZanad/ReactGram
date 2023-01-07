@@ -24,8 +24,16 @@ export class PrismaPhotosRepository implements PhotoRepository {
     return photo;
   }
 
-  getUserPhotos(userId: string): Promise<Photo | Photo[]> {
-    throw new Error('Method not implemented.');
+  async getUserPhotos(userId: string): Promise<Photo | Photo[]> {
+    const result = await this.prisma.photos.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    const photo = result.map(PrismaPhotosMapper.toDomain);
+
+    return photo;
   }
 
   async getAllPhotos(): Promise<Photo[]> {
