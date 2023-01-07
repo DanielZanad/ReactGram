@@ -10,6 +10,7 @@ import {
   Put,
   ParseFilePipe,
   FileTypeValidator,
+  Param,
 } from '@nestjs/common';
 import { registerUserBody } from '../dtos/register-user-body';
 import { RegisterUser } from '@app/use-cases/register-user';
@@ -21,8 +22,9 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { updateUserBody } from '../dtos/update-user-body';
 import { GetUserById } from '@app/use-cases/get-user-by-id';
-import { Password } from '@app/entities/user/password';
 import { UpdateUser } from '@app/use-cases/update-user';
+import { getUserIdParam } from '../dtos/get-user-id-param';
+import { UserViewModel } from '@infra/http/view-models/user-view-model';
 
 @Controller('api/users')
 export class UserController {
@@ -97,16 +99,20 @@ export class UserController {
       bio,
     });
 
-    console.log(updatedUser.passwordHash.value);
-
-    return;
+    return { updatedUser };
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
-    console.log(req.user);
-
+  async getProfile(@Request() req) {
     return req.user;
+  }
+
+  @Get(':id')
+  async findOne(@Param() params: getUserIdParam) {
+    console.log(params.id);
+
+    const { user } = await this.getUserById.execute({ userId: params.id });
+    return UserViewModel.toHTTP(user);
   }
 }

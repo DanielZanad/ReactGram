@@ -20,9 +20,6 @@ describe('Update user', () => {
       password: 'Modified password',
     });
 
-    console.log(updatedUser);
-    console.log(userRepository.users[0]);
-
     expect(userRepository.users[0].bio).toEqual(updatedUser.bio);
     expect(userRepository.users[0].name).toEqual(updatedUser.name);
     expect(userRepository.users[0].passwordHash.value).toEqual(

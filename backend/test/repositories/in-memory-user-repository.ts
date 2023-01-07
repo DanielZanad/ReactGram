@@ -5,9 +5,6 @@ export class InMemoryUserRepository implements UserRepository {
   public users: User[] = [];
 
   async update(user: User): Promise<User | null> {
-    console.log(this.users[0]);
-    console.log(user);
-
     const userExits = await this.users.find((item) => item.id === user.id);
 
     if (!userExits) return null;

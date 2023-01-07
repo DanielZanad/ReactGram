@@ -36,6 +36,10 @@ export class Photo {
     };
   }
 
+  public get id(): string {
+    return this._id;
+  }
+
   public get userName(): string {
     return this.props.userName;
   }
