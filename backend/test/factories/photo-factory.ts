@@ -4,14 +4,17 @@ import { Password } from '@app/entities/user/password';
 
 type Override = Partial<PhotoProps>;
 
-export function makePhoto(override: Override = {}) {
-  return new Photo({
-    userName: 'user-name',
-    userId: 'user-id',
-    image: 'image.png',
-    title: 'title',
-    ...override,
-  });
+export function makePhoto(override: Override = {}, id?: string) {
+  return new Photo(
+    {
+      userName: 'user-name',
+      userId: 'user-id',
+      image: 'image.png',
+      title: 'title',
+      ...override,
+    },
+    id,
+  );
 }
 
 export function makeUser(override: Override = {}) {
