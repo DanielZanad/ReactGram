@@ -13,7 +13,7 @@ describe('Get user photos', () => {
     await photoRepository.register(
       makePhoto({ title: 'image 2', userId: 'user1' }),
     );
-    await photoRepository.users.push(makeUser({ userId: 'user1' }));
+    await photoRepository.users.push(makeUser({}, 'user1'));
 
     const { photo } = await getUserPhotos.execute({ userId: 'user1' });
 

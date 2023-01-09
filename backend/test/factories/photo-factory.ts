@@ -17,7 +17,7 @@ export function makePhoto(override: Override = {}, id?: string) {
   );
 }
 
-export function makeUser(override: Override = {}) {
+export function makeUser(override: Override = {}, id?: string) {
   return new User(
     {
       email: 'example@email.com',
@@ -27,6 +27,6 @@ export function makeUser(override: Override = {}) {
       bio: 'Some bio',
       ...override,
     },
-    override.userId,
+    id,
   );
 }

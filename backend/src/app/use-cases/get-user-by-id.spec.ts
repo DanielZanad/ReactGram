@@ -7,7 +7,7 @@ describe('Get user by id', () => {
     const userRepository = new InMemoryUserRepository();
     const getUserById = new GetUserById(userRepository);
 
-    await userRepository.register(makeUser({ userId: 'user1' }));
+    await userRepository.register(makeUser({ userId: 'user1' }, 'user1'));
 
     const { user } = await getUserById.execute({ userId: 'user1' });
 
@@ -20,7 +20,7 @@ describe('Get user by id', () => {
     const userRepository = new InMemoryUserRepository();
     const getUserById = new GetUserById(userRepository);
 
-    await userRepository.register(makeUser({ userId: 'user1' }));
+    await userRepository.register(makeUser({}, 'user1'));
 
     const { user } = await getUserById.execute({ userId: 'user2' });
 

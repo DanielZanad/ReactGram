@@ -13,6 +13,7 @@ export class InMemoryPhotoRepository implements PhotoRepository {
 
     return photo;
   }
+
   async update(photoId: string, title?: string): Promise<Photo | null> {
     const photo = await this.findById(photoId);
 
@@ -27,6 +28,22 @@ export class InMemoryPhotoRepository implements PhotoRepository {
     }
 
     return this.photos[0];
+  }
+
+  async like(photoId: string, user: User): Promise<Photo | null> {
+    const photo = await this.findById(photoId);
+
+    if (!photo) return null;
+
+    if (photo.likes.includes(user.id)) return null;
+
+    this.photos.map((item) => {
+      if (item.id === photo.id) {
+        photo.likes.push(user.id);
+      }
+    });
+
+    return photo;
   }
 
   async getUserPhotos(userId: string): Promise<Photo | Photo[]> {

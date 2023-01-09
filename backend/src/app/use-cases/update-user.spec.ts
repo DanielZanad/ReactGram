@@ -7,8 +7,8 @@ describe('Update an user', () => {
     const userRepository = new InMemoryUserRepository();
     const updateUser = new UpdateUser(userRepository);
 
-    const user = makeUser({ userId: 'userId' });
-    const userToUpdate = makeUser({ userId: 'userId' });
+    const user = makeUser({}, 'userId');
+    const userToUpdate = makeUser({}, 'userId');
 
     await userRepository.register(user);
 
