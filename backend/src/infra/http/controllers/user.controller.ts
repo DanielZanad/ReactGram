@@ -110,8 +110,6 @@ export class UserController {
 
   @Get(':id')
   async findOne(@Param() params: getUserIdParam) {
-    console.log(params.id);
-
     const { user } = await this.getUserById.execute({ userId: params.id });
     return UserViewModel.toHTTP(user);
   }

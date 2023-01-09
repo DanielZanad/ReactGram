@@ -9,6 +9,7 @@ import { PhotoController } from './controllers/photos.controller';
 import { GetAllPhotos } from '@app/use-cases/get-all-photos';
 import { GetPhotoById } from '@app/use-cases/get-photo-by-id';
 import { GetUserPhotos } from '@app/use-cases/get-user-photos';
+import { UpdatePhoto } from '@app/use-cases/update-photo';
 
 @Module({
   imports: [DatabaseModule],
@@ -21,6 +22,7 @@ import { GetUserPhotos } from '@app/use-cases/get-user-photos';
     GetAllPhotos,
     GetPhotoById,
     GetUserPhotos,
+    UpdatePhoto,
   ],
 })
 export class HttpModule {}

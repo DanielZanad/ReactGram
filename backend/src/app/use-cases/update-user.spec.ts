@@ -1,10 +1,9 @@
 import { InMemoryUserRepository } from '@test/repositories/in-memory-user-repository';
 import { UpdateUser } from './update-user';
 import { makeUser } from '@test/factories/photo-factory';
-import { User } from '@app/entities/user/User';
 
-describe('Update user', () => {
-  it('should be able update an user', async () => {
+describe('Update an user', () => {
+  it('should be able to update an user', async () => {
     const userRepository = new InMemoryUserRepository();
     const updateUser = new UpdateUser(userRepository);
 

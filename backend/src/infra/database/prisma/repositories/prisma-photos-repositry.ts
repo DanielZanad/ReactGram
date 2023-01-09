@@ -24,6 +24,29 @@ export class PrismaPhotosRepository implements PhotoRepository {
     return photo;
   }
 
+  async update(photoId: string, title?: string): Promise<Photo | null> {
+    const photo = await this.findById(photoId);
+
+    if (!photo) {
+      return null;
+    }
+
+    if (title) {
+      photo.title = title;
+    }
+
+    const result = await this.prisma.photos.update({
+      where: {
+        id: photoId,
+      },
+      data: {
+        title: title,
+        updatedAt: new Date(),
+      },
+    });
+
+    return PrismaPhotosMapper.toDomain(result);
+  }
   async getUserPhotos(userId: string): Promise<Photo | Photo[]> {
     const result = await this.prisma.photos.findMany({
       where: {
