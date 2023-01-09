@@ -8,6 +8,9 @@ import { User } from '@app/entities/user/User';
 @Injectable()
 export class PrismaPhotosRepository implements PhotoRepository {
   constructor(private readonly prisma: PrismaService) {}
+  register(photo: Photo): Promise<Photo> {
+    throw new Error('Method not implemented.');
+  }
 
   async findById(photoId: string): Promise<Photo | null> {
     const result = await this.prisma.photos.findUnique({

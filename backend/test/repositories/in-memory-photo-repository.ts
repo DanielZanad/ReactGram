@@ -58,6 +58,7 @@ export class InMemoryPhotoRepository implements PhotoRepository {
 
   async register(photo: Photo) {
     this.photos.push(photo);
+    return this.photos[0];
   }
 
   async getAllPhotos(): Promise<Photo[]> {
