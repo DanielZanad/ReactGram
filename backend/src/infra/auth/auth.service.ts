@@ -27,7 +27,7 @@ export class AuthService {
     return {
       _id: user.id,
       profileImage: user.profileImage,
-      token: sign(payload, jwtConstants.secret, { expiresIn: '3000s' }),
+      token: sign(payload, jwtConstants.secret, { expiresIn: '10000s' }),
     };
   }
 }

@@ -30,16 +30,16 @@ export class InMemoryPhotoRepository implements PhotoRepository {
     return this.photos[0];
   }
 
-  async like(photoId: string, user: User): Promise<Photo | null> {
+  async like(photoId: string, userId: string): Promise<Photo | null> {
     const photo = await this.findById(photoId);
 
     if (!photo) return null;
 
-    if (photo.likes.includes(user.id)) return null;
+    if (photo.likes.includes(userId)) return null;
 
     this.photos.map((item) => {
       if (item.id === photo.id) {
-        photo.likes.push(user.id);
+        photo.addLikes(userId);
       }
     });
 

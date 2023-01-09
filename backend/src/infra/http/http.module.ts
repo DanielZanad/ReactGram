@@ -10,6 +10,7 @@ import { GetAllPhotos } from '@app/use-cases/get-all-photos';
 import { GetPhotoById } from '@app/use-cases/get-photo-by-id';
 import { GetUserPhotos } from '@app/use-cases/get-user-photos';
 import { UpdatePhoto } from '@app/use-cases/update-photo';
+import { LikePhoto } from '@app/use-cases/like-a-photo';
 
 @Module({
   imports: [DatabaseModule],
@@ -23,6 +24,7 @@ import { UpdatePhoto } from '@app/use-cases/update-photo';
     GetPhotoById,
     GetUserPhotos,
     UpdatePhoto,
+    LikePhoto,
   ],
 })
 export class HttpModule {}

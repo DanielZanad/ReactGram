@@ -3,7 +3,7 @@ import { PrismaService } from '@infra/database/prisma/prisma.service';
 import { UserRepository } from '@app/repositories/user-repository';
 import { PrismaUserRepository } from './prisma/repositories/prisma-user-repository';
 import { PhotoRepository } from '@app/repositories/photo-repository';
-import { PrismaPhotosRepository } from './prisma/repositories/prisma-photos-repositry';
+import { PrismaPhotosRepository } from './prisma/repositories/prisma-photos-repository';
 
 @Module({
   providers: [

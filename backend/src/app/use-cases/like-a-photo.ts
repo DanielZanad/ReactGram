@@ -4,7 +4,7 @@ import { Photo } from '@app/entities/photo/Photo';
 import { User } from '@app/entities/user/User';
 
 interface LikePhotoRequest {
-  user: User;
+  userId: string;
   photoId: string;
 }
 
@@ -19,9 +19,11 @@ export class LikePhoto {
   constructor(private photoRepository: PhotoRepository) {}
 
   async execute(request: LikePhotoRequest): Promise<LikePhotoResponse> {
-    const { photoId, user } = request;
+    const { photoId, userId } = request;
 
-    const photo = await this.photoRepository.like(photoId, user);
+    const photo = await this.photoRepository.like(photoId, userId);
+
+    if (!photo) return null;
 
     return {
       photoId: photo.id,

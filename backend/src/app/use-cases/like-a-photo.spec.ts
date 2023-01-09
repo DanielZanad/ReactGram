@@ -14,7 +14,7 @@ describe('Like a photo', () => {
 
     const response = await likePhoto.execute({
       photoId: photo.id,
-      user,
+      userId: user.id,
     });
 
     expect(response).toBeTruthy();

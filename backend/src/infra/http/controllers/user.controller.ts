@@ -45,9 +45,7 @@ export class UserController {
       password,
     });
 
-    return {
-      user,
-    };
+    return UserViewModel.toHTTP(user);
   }
 
   @UseGuards(LocalAuthGuard)

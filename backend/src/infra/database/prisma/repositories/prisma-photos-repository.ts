@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma.service';
 import { Photo } from '@app/entities/photo/Photo';
 import { PrismaPhotosMapper } from '../mappers/prisma-photo-mapper';
 import { Injectable } from '@nestjs/common';
+import { User } from '@app/entities/user/User';
 
 @Injectable()
 export class PrismaPhotosRepository implements PhotoRepository {
@@ -22,6 +23,30 @@ export class PrismaPhotosRepository implements PhotoRepository {
     const photo = PrismaPhotosMapper.toDomain(result);
 
     return photo;
+  }
+
+  async like(photoId: string, userId: string): Promise<Photo | null> {
+    const photo = await this.findById(photoId);
+    if (!photo) {
+      return null;
+    }
+
+    if (photo.likes.includes(userId)) return null;
+
+    photo.addLikes(userId);
+
+    const result = await this.prisma.photos.update({
+      where: {
+        id: photoId,
+      },
+      data: {
+        likes: photo.likes,
+      },
+    });
+
+    console.log('result', result);
+
+    return PrismaPhotosMapper.toDomain(result);
   }
 
   async update(photoId: string, title?: string): Promise<Photo | null> {
