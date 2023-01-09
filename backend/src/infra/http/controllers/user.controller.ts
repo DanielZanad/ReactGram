@@ -87,6 +87,7 @@ export class UserController {
       profileImage = file;
     }
 
+    console.log(file);
     const { user } = await this.getUserById.execute({ userId: req.user._id });
 
     const { updatedUser } = await this.updateUser.execute({
@@ -97,7 +98,7 @@ export class UserController {
       bio,
     });
 
-    return { updatedUser };
+    return UserViewModel.toHTTP(updatedUser);
   }
 
   @UseGuards(JwtAuthGuard)

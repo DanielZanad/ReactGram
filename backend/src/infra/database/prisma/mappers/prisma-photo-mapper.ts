@@ -3,6 +3,21 @@ import { PhotoComment } from '@app/entities/photo/PhotoComment';
 import { photos as photoRaw } from '@prisma/client';
 
 export class PrismaPhotosMapper {
+  static toPrisma(photo: Photo): photoRaw {
+    return {
+      id: photo.id,
+      image: photo.image,
+      userId: photo.userId,
+      userName: photo.userName,
+      comments: photo.comments,
+      likes: photo.likes,
+      title: photo.title,
+      updatedAt: photo.updatedAt,
+      createdAt: photo.createdAt,
+      v: 0,
+    };
+  }
+
   static toDomain(photoRaw: photoRaw) {
     const photoComments = [];
 

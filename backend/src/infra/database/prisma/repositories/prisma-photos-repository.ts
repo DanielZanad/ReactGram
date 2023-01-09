@@ -8,9 +8,6 @@ import { User } from '@app/entities/user/User';
 @Injectable()
 export class PrismaPhotosRepository implements PhotoRepository {
   constructor(private readonly prisma: PrismaService) {}
-  register(photo: Photo): Promise<Photo> {
-    throw new Error('Method not implemented.');
-  }
 
   async findById(photoId: string): Promise<Photo | null> {
     const result = await this.prisma.photos.findUnique({
@@ -28,26 +25,11 @@ export class PrismaPhotosRepository implements PhotoRepository {
     return photo;
   }
 
-  async like(photoId: string, userId: string): Promise<Photo | null> {
-    const photo = await this.findById(photoId);
-    if (!photo) {
-      return null;
-    }
-
-    if (photo.likes.includes(userId)) return null;
-
-    photo.addLikes(userId);
-
-    const result = await this.prisma.photos.update({
-      where: {
-        id: photoId,
-      },
-      data: {
-        likes: photo.likes,
-      },
+  async register(photo: Photo): Promise<Photo> {
+    const raw = PrismaPhotosMapper.toPrisma(photo);
+    const result = await this.prisma.photos.create({
+      data: raw,
     });
-
-    console.log('result', result);
 
     return PrismaPhotosMapper.toDomain(result);
   }
@@ -92,5 +74,28 @@ export class PrismaPhotosRepository implements PhotoRepository {
 
     const photos = result.map(PrismaPhotosMapper.toDomain);
     return photos;
+  }
+  async like(photoId: string, userId: string): Promise<Photo | null> {
+    const photo = await this.findById(photoId);
+    if (!photo) {
+      return null;
+    }
+
+    if (photo.likes.includes(userId)) return null;
+
+    photo.addLikes(userId);
+
+    const result = await this.prisma.photos.update({
+      where: {
+        id: photoId,
+      },
+      data: {
+        likes: photo.likes,
+      },
+    });
+
+    console.log('result', result);
+
+    return PrismaPhotosMapper.toDomain(result);
   }
 }

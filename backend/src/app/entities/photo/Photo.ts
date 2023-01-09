@@ -31,6 +31,7 @@ export class Photo {
     this.props = {
       ...props,
       createdAt: props.createdAt ?? new Date(),
+      updatedAt: props.updatedAt ?? new Date(),
       likes: props.likes ?? [],
       comments: props.comments ?? [],
     };
