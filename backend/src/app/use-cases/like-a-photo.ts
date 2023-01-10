@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PhotoRepository } from '@app/repositories/photo-repository';
-import { Photo } from '@app/entities/photo/Photo';
-import { User } from '@app/entities/user/User';
 
 interface LikePhotoRequest {
   userId: string;

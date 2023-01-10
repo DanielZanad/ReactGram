@@ -1,4 +1,5 @@
 import { Photo } from '@app/entities/photo/Photo';
+import { PhotoComment } from '@app/entities/photo/PhotoComment';
 import { User } from '@app/entities/user/User';
 import { PhotoRepository } from '@app/repositories/photo-repository';
 
@@ -56,6 +57,15 @@ export class InMemoryPhotoRepository implements PhotoRepository {
     });
 
     return photo;
+  }
+
+  async comment(photoId: string, comment: PhotoComment): Promise<PhotoComment> {
+    const photo = await this.findById(photoId);
+    if (!photo) return null;
+
+    photo.addComment(comment);
+
+    return comment;
   }
 
   async search(query: string): Promise<Photo[] | null> {

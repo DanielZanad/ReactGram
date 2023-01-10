@@ -1,4 +1,5 @@
 import { Photo } from '@app/entities/photo/Photo';
+import { PhotoComment } from '@app/entities/photo/PhotoComment';
 
 export abstract class PhotoRepository {
   abstract register(photo: Photo): Promise<Photo>;
@@ -9,4 +10,8 @@ export abstract class PhotoRepository {
   abstract delete(photoId: string, userId: string): Promise<Photo | null>;
   abstract search(query: string): Promise<Array<Photo> | null>;
   abstract like(photoId: string, userId: string): Promise<Photo | null>;
+  abstract comment(
+    photoId: string,
+    comment: PhotoComment,
+  ): Promise<PhotoComment | null>;
 }
