@@ -32,7 +32,7 @@ export class PrismaPhotosRepository implements PhotoRepository {
     return PrismaPhotosMapper.toDomain(result);
   }
 
-  async delete(photoId: string): Promise<Photo | null> {
+  async delete(photoId: string, userId: string): Promise<Photo | null> {
     const photo = await this.prisma.photos.findUnique({
       where: {
         id: photoId,
@@ -42,6 +42,8 @@ export class PrismaPhotosRepository implements PhotoRepository {
     if (!photo) {
       return null;
     }
+
+    if (photo.userId !== userId) return null;
 
     const result = await this.prisma.photos.delete({
       where: {

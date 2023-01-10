@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '@infra/auth/jwt-auth.guard';
 import {
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   Get,
   HttpException,
@@ -28,6 +29,8 @@ import { LikePhotoParam } from '../dtos/like-a-photo';
 import { LikePhoto } from '@app/use-cases/like-a-photo';
 import { registerPhotoBody } from '../dtos/register-photo-body';
 import { RegisterPhoto } from '@app/use-cases/register-photo';
+import { DeletePhoto } from '@app/use-cases/delete-photo';
+import { deletePhotoParam } from '../dtos/delete-photo-param';
 
 @Controller('/api/photos')
 export class PhotoController {
@@ -38,6 +41,7 @@ export class PhotoController {
     private updatePhoto: UpdatePhoto,
     private likePhoto: LikePhoto,
     private registerPhoto: RegisterPhoto,
+    private deletePhoto: DeletePhoto,
   ) {}
 
   @Get('/user/:id')
@@ -126,6 +130,27 @@ export class PhotoController {
     }
 
     return { ...response };
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  async delete(@Request() req, @Param() params: deletePhotoParam) {
+    const { deletedPhoto } = await this.deletePhoto.execute({
+      photoId: params.id,
+      userId: req.user._id,
+    });
+
+    if (!deletedPhoto) {
+      throw new HttpException(
+        'Por favor, tente novamente mais tarde',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    return {
+      id: deletedPhoto.id,
+      message: 'Foto excluida com sucesso',
+    };
   }
 
   @Get(':id')
