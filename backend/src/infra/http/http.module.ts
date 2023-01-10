@@ -13,6 +13,7 @@ import { UpdatePhoto } from '@app/use-cases/update-photo';
 import { LikePhoto } from '@app/use-cases/like-a-photo';
 import { RegisterPhoto } from '@app/use-cases/register-photo';
 import { DeletePhoto } from '@app/use-cases/delete-photo';
+import { SearchPhoto } from '@app/use-cases/search-photo';
 
 @Module({
   imports: [DatabaseModule],
@@ -29,6 +30,7 @@ import { DeletePhoto } from '@app/use-cases/delete-photo';
     LikePhoto,
     RegisterPhoto,
     DeletePhoto,
+    SearchPhoto,
   ],
 })
 export class HttpModule {}

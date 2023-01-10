@@ -55,7 +55,11 @@ export class PrismaPhotosRepository implements PhotoRepository {
   }
 
   async update(photoId: string, title?: string): Promise<Photo | null> {
-    const photo = await this.findById(photoId);
+    const photo = await this.prisma.photos.findUnique({
+      where: {
+        id: photoId,
+      },
+    });
 
     if (!photo) {
       return null;
@@ -95,8 +99,16 @@ export class PrismaPhotosRepository implements PhotoRepository {
     const photos = result.map(PrismaPhotosMapper.toDomain);
     return photos;
   }
+
   async like(photoId: string, userId: string): Promise<Photo | null> {
-    const photo = await this.findById(photoId);
+    const photo = PrismaPhotosMapper.toDomain(
+      await this.prisma.photos.findUnique({
+        where: {
+          id: photoId,
+        },
+      }),
+    );
+
     if (!photo) {
       return null;
     }
@@ -117,5 +129,19 @@ export class PrismaPhotosRepository implements PhotoRepository {
     console.log('result', result);
 
     return PrismaPhotosMapper.toDomain(result);
+  }
+
+  async search(query: string): Promise<Photo[] | null> {
+    const result = await this.prisma.photos.findMany({
+      where: {
+        title: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+    });
+
+    const photos = result.map(PrismaPhotosMapper.toDomain);
+    return photos;
   }
 }

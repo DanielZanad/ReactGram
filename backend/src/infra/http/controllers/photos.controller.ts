@@ -12,6 +12,7 @@ import {
   ParseFilePipe,
   Post,
   Put,
+  Query,
   Request,
   UploadedFile,
   UseGuards,
@@ -31,6 +32,7 @@ import { registerPhotoBody } from '../dtos/register-photo-body';
 import { RegisterPhoto } from '@app/use-cases/register-photo';
 import { DeletePhoto } from '@app/use-cases/delete-photo';
 import { deletePhotoParam } from '../dtos/delete-photo-param';
+import { SearchPhoto } from '@app/use-cases/search-photo';
 
 @Controller('/api/photos')
 export class PhotoController {
@@ -42,6 +44,7 @@ export class PhotoController {
     private likePhoto: LikePhoto,
     private registerPhoto: RegisterPhoto,
     private deletePhoto: DeletePhoto,
+    private searchPhoto: SearchPhoto,
   ) {}
 
   @Get('/user/:id')
@@ -106,32 +109,6 @@ export class PhotoController {
     return photos.map(photoViewModel.toHTTP);
   }
 
-  @Put('/like/:id')
-  @UseGuards(JwtAuthGuard)
-  async like(@Request() req, @Param() params: LikePhotoParam) {
-    const { photo } = await this.getPhotoById.execute({
-      photoId: params.id,
-    });
-
-    if (!photo) {
-      throw new HttpException('Foto não encontrada!', HttpStatus.NOT_FOUND);
-    }
-
-    const response = await this.likePhoto.execute({
-      photoId: photo.id,
-      userId: req.user._id,
-    });
-
-    if (!response) {
-      throw new HttpException(
-        'Você já curtiu esta foto.',
-        HttpStatus.UNPROCESSABLE_ENTITY,
-      );
-    }
-
-    return { ...response };
-  }
-
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   async delete(@Request() req, @Param() params: deletePhotoParam) {
@@ -151,6 +128,14 @@ export class PhotoController {
       id: deletedPhoto.id,
       message: 'Foto excluida com sucesso',
     };
+  }
+
+  @Get('/search')
+  @UseGuards(JwtAuthGuard)
+  async search(@Query('q') query) {
+    const { photos } = await this.searchPhoto.execute({ query });
+
+    return photos.map(photoViewModel.toHTTP);
   }
 
   @Get(':id')
@@ -183,5 +168,31 @@ export class PhotoController {
     });
 
     return photoViewModel.toHTTP(updatedPhoto);
+  }
+
+  @Put('/like/:id')
+  @UseGuards(JwtAuthGuard)
+  async like(@Request() req, @Param() params: LikePhotoParam) {
+    const { photo } = await this.getPhotoById.execute({
+      photoId: params.id,
+    });
+
+    if (!photo) {
+      throw new HttpException('Foto não encontrada!', HttpStatus.NOT_FOUND);
+    }
+
+    const response = await this.likePhoto.execute({
+      photoId: photo.id,
+      userId: req.user._id,
+    });
+
+    if (!response) {
+      throw new HttpException(
+        'Você já curtiu esta foto.',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
+    return { ...response };
   }
 }

@@ -7,14 +7,18 @@ describe('Search photo', () => {
     const photoRepository = new InMemoryPhotoRepository();
     const searchPhoto = new SearchPhoto(photoRepository);
 
-    photoRepository.register(makePhoto());
+    photoRepository.register(makePhoto({}, 'photo1'));
+    photoRepository.register(makePhoto({}, 'photo2'));
 
-    const { photo } = await searchPhoto.execute({
+    const { photos } = await searchPhoto.execute({
       query: 'title',
     });
 
-    expect(photo).toBeTruthy();
-    expect(photo.title).toEqual('title');
+    expect(photos).toBeTruthy();
+    expect(photos).toHaveLength(2);
+    expect(photos).toEqual(
+      expect.arrayContaining([expect.objectContaining({ title: 'title' })]),
+    );
   });
 
   it('should not be able to search for a photo', async () => {
@@ -23,10 +27,10 @@ describe('Search photo', () => {
 
     photoRepository.register(makePhoto());
 
-    const { photo } = await searchPhoto.execute({
+    const { photos } = await searchPhoto.execute({
       query: 'aaa',
     });
 
-    expect(photo).toBeNull();
+    expect(photos).toHaveLength(0);
   });
 });

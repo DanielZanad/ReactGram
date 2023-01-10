@@ -7,6 +7,6 @@ export abstract class PhotoRepository {
   abstract getUserPhotos(userId: string): Promise<Array<Photo> | Photo>;
   abstract update(photoId: string, title?: string): Promise<Photo | null>;
   abstract delete(photoId: string, userId: string): Promise<Photo | null>;
-  abstract search(query: string): Promise<Photo | null>;
+  abstract search(query: string): Promise<Array<Photo> | null>;
   abstract like(photoId: string, userId: string): Promise<Photo | null>;
 }

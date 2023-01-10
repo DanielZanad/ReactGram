@@ -7,7 +7,7 @@ interface SearchPhotoRequest {
 }
 
 interface SearchPhotoResponse {
-  photo: Photo;
+  photos: Photo[];
 }
 
 @Injectable()
@@ -17,10 +17,10 @@ export class SearchPhoto {
   async execute(request: SearchPhotoRequest): Promise<SearchPhotoResponse> {
     const { query } = request;
 
-    const photo = await this.photoRepository.search(query);
+    const photos = await this.photoRepository.search(query);
 
     return {
-      photo,
+      photos,
     };
   }
 }
