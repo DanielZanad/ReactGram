@@ -58,6 +58,20 @@ export class InMemoryPhotoRepository implements PhotoRepository {
     return photo;
   }
 
+  async search(query: string): Promise<Photo | null> {
+    const photo = this.photos.find((item) => {
+      if (item.title.search(new RegExp(query, 'i')) !== -1) {
+        return item;
+      }
+    });
+
+    if (!photo) {
+      return null;
+    }
+
+    return photo;
+  }
+
   async getUserPhotos(userId: string): Promise<Photo | Photo[]> {
     const result = await this.photos.filter((photo) => photo.userId === userId);
 
