@@ -30,12 +30,11 @@ export class InMemoryPhotoRepository implements PhotoRepository {
     return this.photos[0];
   }
 
-  async delete(photoId: string): Promise<Photo> {
+  async delete(photoId: string, userId: string): Promise<Photo | null> {
     let photoDeleted = null;
-    this.photos.filter((item) => {
-      if (item.id === photoId) {
+    this.photos.map((item) => {
+      if (item.userId === userId && item.id === photoId) {
         photoDeleted = new Photo(item, item.id);
-
         this.photos.pop();
       }
     });

@@ -4,6 +4,7 @@ import { Photo } from '@app/entities/photo/Photo';
 
 interface DeletePhotoRequest {
   photoId: string;
+  userId: string;
 }
 
 interface DeletePhotoResponse {
@@ -15,9 +16,9 @@ export class DeletePhoto {
   constructor(private photoRepository: PhotoRepository) {}
 
   async execute(request: DeletePhotoRequest): Promise<DeletePhotoResponse> {
-    const { photoId } = request;
+    const { photoId, userId } = request;
 
-    const deletedPhoto = await this.photoRepository.delete(photoId);
+    const deletedPhoto = await this.photoRepository.delete(photoId, userId);
 
     return { deletedPhoto };
   }

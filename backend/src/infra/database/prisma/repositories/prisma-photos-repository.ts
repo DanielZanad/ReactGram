@@ -3,8 +3,6 @@ import { PrismaService } from '../prisma.service';
 import { Photo } from '@app/entities/photo/Photo';
 import { PrismaPhotosMapper } from '../mappers/prisma-photo-mapper';
 import { Injectable } from '@nestjs/common';
-import { User } from '@app/entities/user/User';
-
 @Injectable()
 export class PrismaPhotosRepository implements PhotoRepository {
   constructor(private readonly prisma: PrismaService) {}
@@ -29,6 +27,26 @@ export class PrismaPhotosRepository implements PhotoRepository {
     const raw = PrismaPhotosMapper.toPrisma(photo);
     const result = await this.prisma.photos.create({
       data: raw,
+    });
+
+    return PrismaPhotosMapper.toDomain(result);
+  }
+
+  async delete(photoId: string): Promise<Photo | null> {
+    const photo = await this.prisma.photos.findUnique({
+      where: {
+        id: photoId,
+      },
+    });
+
+    if (!photo) {
+      return null;
+    }
+
+    const result = await this.prisma.photos.delete({
+      where: {
+        id: photoId,
+      },
     });
 
     return PrismaPhotosMapper.toDomain(result);
