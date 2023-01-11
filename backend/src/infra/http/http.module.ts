@@ -14,6 +14,7 @@ import { LikePhoto } from '@app/use-cases/like-a-photo';
 import { RegisterPhoto } from '@app/use-cases/register-photo';
 import { DeletePhoto } from '@app/use-cases/delete-photo';
 import { SearchPhoto } from '@app/use-cases/search-photo';
+import { AddComment } from '@app/use-cases/add-a-comment';
 
 @Module({
   imports: [DatabaseModule],
@@ -31,6 +32,7 @@ import { SearchPhoto } from '@app/use-cases/search-photo';
     RegisterPhoto,
     DeletePhoto,
     SearchPhoto,
+    AddComment,
   ],
 })
 export class HttpModule {}

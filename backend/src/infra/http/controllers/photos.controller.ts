@@ -33,6 +33,10 @@ import { RegisterPhoto } from '@app/use-cases/register-photo';
 import { DeletePhoto } from '@app/use-cases/delete-photo';
 import { deletePhotoParam } from '../dtos/delete-photo-param';
 import { SearchPhoto } from '@app/use-cases/search-photo';
+import { PhotoComment } from '@app/entities/photo/PhotoComment';
+import { commentPhotoBody, commentPhotoParam } from '../dtos/comment-photo';
+import { AddComment } from '@app/use-cases/add-a-comment';
+import { photoCommentViewModel } from '../view-models/photoComment-view-model';
 
 @Controller('/api/photos')
 export class PhotoController {
@@ -45,6 +49,7 @@ export class PhotoController {
     private registerPhoto: RegisterPhoto,
     private deletePhoto: DeletePhoto,
     private searchPhoto: SearchPhoto,
+    private addComment: AddComment,
   ) {}
 
   @Get('/user/:id')
@@ -168,6 +173,35 @@ export class PhotoController {
     });
 
     return photoViewModel.toHTTP(updatedPhoto);
+  }
+
+  @Put('/comment/:id')
+  @UseGuards(JwtAuthGuard)
+  async comment(
+    @Request() req,
+    @Body() body: commentPhotoBody,
+    @Param() param: commentPhotoParam,
+  ) {
+    const photoComment = new PhotoComment({
+      comment: body.comment,
+      userId: req.user._id,
+      userImage: req.user.profileImage,
+      userName: req.user.name,
+    });
+
+    const { comment } = await this.addComment.execute({
+      comment: photoComment,
+      photoId: param.id,
+    });
+
+    if (!comment) {
+      throw new HttpException('Foto não encontrada!', HttpStatus.NOT_FOUND);
+    }
+
+    return {
+      comment: photoCommentViewModel.toHTTP(comment),
+      message: 'O comentario foi adicionado com sucesso',
+    };
   }
 
   @Put('/like/:id')

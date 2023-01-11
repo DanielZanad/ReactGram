@@ -39,4 +39,19 @@ export class PrismaPhotosMapper {
       photoRaw.id,
     );
   }
+
+  static photoCommentToPrisma(photoComments: PhotoComment[]) {
+    const result = [];
+
+    photoComments.map((photoComment) => {
+      result.push({
+        comment: photoComment.comment,
+        userName: photoComment.userName,
+        userImage: photoComment.userImage,
+        userId: photoComment.userId,
+      });
+    });
+
+    return result;
+  }
 }

@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma.service';
 import { Photo } from '@app/entities/photo/Photo';
 import { PrismaPhotosMapper } from '../mappers/prisma-photo-mapper';
 import { Injectable } from '@nestjs/common';
+import { PhotoComment } from '@app/entities/photo/PhotoComment';
 @Injectable()
 export class PrismaPhotosRepository implements PhotoRepository {
   constructor(private readonly prisma: PrismaService) {}
@@ -52,6 +53,36 @@ export class PrismaPhotosRepository implements PhotoRepository {
     });
 
     return PrismaPhotosMapper.toDomain(result);
+  }
+
+  async comment(
+    photoId: string,
+    comment: PhotoComment,
+  ): Promise<PhotoComment | null> {
+    const photo = PrismaPhotosMapper.toDomain(
+      await this.prisma.photos.findUnique({
+        where: {
+          id: photoId,
+        },
+      }),
+    );
+
+    if (!photo) {
+      return null;
+    }
+
+    photo.addComment(comment);
+
+    const result = await this.prisma.photos.update({
+      where: {
+        id: photoId,
+      },
+      data: {
+        comments: PrismaPhotosMapper.photoCommentToPrisma(photo.comments),
+      },
+    });
+
+    return new PhotoComment(comment);
   }
 
   async update(photoId: string, title?: string): Promise<Photo | null> {
@@ -125,8 +156,6 @@ export class PrismaPhotosRepository implements PhotoRepository {
         likes: photo.likes,
       },
     });
-
-    console.log('result', result);
 
     return PrismaPhotosMapper.toDomain(result);
   }
