@@ -10,6 +10,16 @@ import { UserViewModel } from '@infra/http/view-models/user-view-model';
 export class AuthService {
   constructor(private userRepository: UserRepository) {}
 
+  async validateEmail(userEmail: string) {
+    const user = await this.userRepository.emailExists(userEmail);
+
+    if (user) {
+      return null;
+    }
+
+    return user;
+  }
+
   async validateUser(userEmail: string, password: string) {
     const user = await this.userRepository.emailExists(userEmail);
 
@@ -20,6 +30,10 @@ export class AuthService {
     if (await compare(password, user.passwordHash.value)) {
       return user;
     }
+  }
+
+  async register(userId: string) {
+    return sign({ userId }, jwtConstants.secret, { expiresIn: '10000s' });
   }
 
   async login(user: User) {

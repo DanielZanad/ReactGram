@@ -14,8 +14,4 @@ export class registerUserBody {
   @IsNotEmpty()
   @IsString()
   password: string;
-
-  @IsNotEmpty()
-  @Match(registerUserBody, (s) => s.password)
-  confirmPassword: string;
 }

@@ -15,10 +15,11 @@ import { RegisterPhoto } from '@app/use-cases/register-photo';
 import { DeletePhoto } from '@app/use-cases/delete-photo';
 import { SearchPhoto } from '@app/use-cases/search-photo';
 import { AddComment } from '@app/use-cases/add-a-comment';
+import { UploadController } from './controllers/uploads.controller';
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [UserController, PhotoController],
+  controllers: [UserController, PhotoController, UploadController],
   providers: [
     RegisterUser,
     GetUserById,

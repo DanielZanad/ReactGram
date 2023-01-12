@@ -11,6 +11,9 @@ import {
   ParseFilePipe,
   FileTypeValidator,
   Param,
+  HttpException,
+  HttpStatus,
+  Res,
 } from '@nestjs/common';
 import { registerUserBody } from '../dtos/register-user-body';
 import { RegisterUser } from '@app/use-cases/register-user';
@@ -39,13 +42,24 @@ export class UserController {
   async register(@Body() body: registerUserBody) {
     const { password, email, name } = body;
 
+    const emailExists = await this.authService.validateEmail(email);
+    if (emailExists) {
+      throw new HttpException(
+        'Por favor, utilize outro e-mail.',
+        HttpStatus.UNPROCESSABLE_ENTITY,
+      );
+    }
+
     const { user } = await this.registerUser.execute({
       name,
       email,
       password,
     });
 
-    return UserViewModel.toHTTP(user);
+    return {
+      _id: user.id,
+      token: await this.authService.register(user.id),
+    };
   }
 
   @UseGuards(LocalAuthGuard)

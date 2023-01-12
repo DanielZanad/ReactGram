@@ -32,13 +32,15 @@ export class PrismaUserRepository implements UserRepository {
     return PrismaUserMapper.toDomain(result);
   }
   async emailExists(userEmail: string): Promise<User | null> {
-    const result = await this.prisma.users.findFirst({
+    const result = await this.prisma.users.findUnique({
       where: {
         email: userEmail,
       },
     });
 
-    if (!result) return null;
+    if (!result) {
+      return null;
+    }
 
     return PrismaUserMapper.toDomain(result);
   }

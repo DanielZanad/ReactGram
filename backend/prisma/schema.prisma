@@ -32,9 +32,9 @@ model users {
   v            Int?     @map("__v")
   bio          String?
   createdAt    DateTime @db.Date
-  email        String
+  email        String   @unique
   name         String
   password     String
-  profileImage String
+  profileImage String?
   updatedAt    DateTime @db.Date
 }

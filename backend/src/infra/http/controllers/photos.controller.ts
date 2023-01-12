@@ -94,8 +94,6 @@ export class PhotoController {
       image = file;
     }
 
-    console.log(req.user);
-
     const { newPhoto } = await this.registerPhoto.execute({
       image: image.filename,
       title: body.title,
